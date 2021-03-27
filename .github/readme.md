@@ -17,3 +17,7 @@ preserve this readme.
 
 This repository exists separately like this so that I can use it as a submodule
 in [`cra-ast-localize`](https://github.com/tomashubelbauer/cra-ast-localize).
+
+```sh
+git submodule add https://github.com/tomashubelbauer/cra-sample
+```
