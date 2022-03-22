@@ -19,8 +19,8 @@ jobs:
           git config --global user.email "tomas@hubelbauer.net"
           git config --global user.name "Tomas Hubelbauer"
 
-          # Check out the `main` branch - GitHub Actions checks out detached HEAD
-          git checkout main
+          # Check out the `master` branch - GitHub Actions checks out detached HEAD
+          git checkout master
 
       # Reset the directory repository to an empty state for new CRA run
       - name: Delete everything but the `.github` repository directory
