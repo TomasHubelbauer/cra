@@ -12,7 +12,8 @@ jobs:
           npx create-react-app cra
           cd cra
           rm -rf node_modules
-          tree cra
+          tree .
+          shopt -s extglob
           shopt -p
           # TODO: Delete everything but .github from the repository directory
           # TODO: Move the contents of `cra` out to the repository directory
