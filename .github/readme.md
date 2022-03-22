@@ -34,3 +34,10 @@ It will need a manual landing page with a switcher for what version to see, they
 will appear the same, but still it will be two different sets of artifacts, so
 it makes sense to add both. The index page will also need to be preserved by the
 reset script in the workflow.
+
+### Create an issue / otherwise cause an email on template change
+
+The CRA tools templates are not changing very frequently so when they do, it
+would be good to know as a prompt to check what has changed in the latest
+release. Opening an issue and assigning it to myself could work to generate an
+email, the issue could be titled something like "Check out new CRA version XYZ".
