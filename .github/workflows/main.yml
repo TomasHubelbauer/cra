@@ -8,14 +8,22 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-      # extglob is not enabled in the GitHub Actions Ubuntu agent by default
-      # See `shopt -p extglob` to verify
-      - name: Enable extglob to be able to delete everything but ".github"
-        run: shopt -s extglob
+      # Reset the directory repository to an empty state for new CRA run
+      - name: Delete everything but the `.github` repository directory
+        run: |
+          # Enable dotglob to make sure the glob pattern matches hidden dotfiles as well
+          shopt -s dotglob
 
-      # !(".github") is an extglob specific syntax so that's why we enabled it
-      - name: Delete everything but the .github repository directory
-        run: rm -rf !(".github")
+          # Walk the repository directory entries and delete everything but `.github`
+          for name in ./*
+          do
+            if [ $name == "./.github" ] || [ $name == "./.git" ]
+            then
+              continue
+            fi
+
+            rm -rf $name
+          done
 
       # This is done temporarily to validate the above command did work as expected
       - name: Tree the repository directory to verify the deletion of everything
@@ -30,9 +38,19 @@ jobs:
         run: npx create-react-app cra
 
       # Remove the forcibly installed Node moduels through NPM
+      # See https://github.com/facebook/create-react-app/issues/9792
       - name: Remove installed node_modules directory (unused in the workflow)
         run: rm -rf cra/node_modules
 
-        # TODO: Delete everything but .github from the repository directory
-        # TODO: Move the contents of `cra` out to the repository directory
-        # TODO: Delete the now empty `cra` directory
+      - name: Copy the contents of `cra` out to the repository directory
+        run: cp -r cra/ .
+
+      - name: Delete the now empty `cra` directory
+        run: rm cra
+        
+      # This is done temporarily to validate the above command did work as expected
+      - name: Tree the repository directory to verify the move out of `cra`
+        run: tree .
+
+      - name: Commit and push the change to the GitHub repository from the agent
+        run: echo TODO
