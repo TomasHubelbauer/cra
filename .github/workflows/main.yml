@@ -29,10 +29,6 @@ jobs:
             rm -rf $name
           done
 
-      # This is done temporarily to validate the above command did work as expected
-      - name: Tree the repository directory to verify the deletion of everything
-        run: ls -a .
-
       # This will also attempt to initialize a Git repository and fail (no Git
       # identity set up on the build agent) and it will install the Node NPM
       # dependencies, neither of which we can prevent due to lacking CLI options
@@ -55,10 +51,6 @@ jobs:
       # The directory has become empty as we moved out all of its contents up
       - name: Delete the now empty `cra` directory
         run: rm -rf cra
-        
-      # This is done temporarily to validate the above command did work as expected
-      - name: Tree the repository directory to verify the move out of `cra`
-        run: tree -a .
 
       - name: Commit and push the change to the GitHub repository from the agent
         run: echo TODO
