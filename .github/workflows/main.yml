@@ -71,18 +71,21 @@ jobs:
       - name: Stage the changes resulting from the above steps
         run: git add *
 
-      - name: Commit and push the change to the GitHub repository from the agent
+      - name: Bail if there are no changes staged to commit
+        id: bail
         run: |
-          # Bail if there are no changes staged to commit
           if git diff-index --quiet HEAD --; then
             exit
           fi
 
-          # Commit the staged changes to the workflow repository
-          git commit -m "Update CRA template generated source code"
+      - name: Echo the bail step output for debugging
+        run: echo "${{steps.run_tests.outputs.*}}"
 
-          # Rebase if the branch has changed meanwhile or fail on conflicts
-          git pull --rebase
+      - name: Commit the staged changes to the workflow repository
+        run: git commit -m "Update CRA template generated source code"
 
-          # Push the commit to the workflow repository 
-          git push
+      - name: Rebase if the branch has changed meanwhile or fail on conflicts
+        run: git pull --rebase
+
+      - name: Push the commit to the workflow repository
+        run: git push
