@@ -7,14 +7,32 @@ jobs:
   cra:
     runs-on: ubuntu-latest
     steps:
+
+      # extglob is not enabled in the GitHub Actions Ubuntu agent by default
+      # See `shopt -p extglob` to verify
+      - name: Enable extglob to be able to delete everything but ".github"
+        run: shopt -s extglob
+
+      # !(".github") is an extglob specific syntax so that's why we enabled it
+      - name: Delete everything but the .github repository directory
+        run: rm -rf !(".github")
+
+      # This is done temporarily to validate the above command did work as expected
+      - name: Tree the repository directory to verify the deletion of everything
+        run: tree .
+
+      # This will also attempt to initialize a Git repository and fail (no Git
+      # identity set up on the build agent) and it will install the Node NPM
+      # dependencies, neither of which we can prevent due to lacking CLI options
+      # Git: https://github.com/facebook/create-react-app/issues/9502
+      # NPM: https://github.com/facebook/create-react-app/issues/9792
       - name: Install and scaffold create-react-app
-        run: |
-          npx create-react-app cra
-          cd cra
-          rm -rf node_modules
-          tree .
-          shopt -s extglob
-          shopt -p
-          # TODO: Delete everything but .github from the repository directory
-          # TODO: Move the contents of `cra` out to the repository directory
-          # TODO: Delete the now empty `cra` directory
+        run: npx create-react-app cra
+
+      # Remove the forcibly installed Node moduels through NPM
+      - name: Remove installed node_modules directory (unused in the workflow)
+        run: rm -rf cra/node_modules
+
+        # TODO: Delete everything but .github from the repository directory
+        # TODO: Move the contents of `cra` out to the repository directory
+        # TODO: Delete the now empty `cra` directory
