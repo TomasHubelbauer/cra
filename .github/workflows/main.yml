@@ -1,1 +1,16 @@
 name: Scaffold create-react-app
+on:
+  push:
+  schedule:
+    - cron: "0 0 * * *"
+jobs:
+  cra:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install and scaffold create-react-app
+        run: |
+          npx create-react-app cra
+          tree cra
+          # TODO: Delete everything but .github from the repository directory
+          # TODO: Move the contents of `cra` out to the repository directory
+          # TODO: Delete the now empty `cra` directory
