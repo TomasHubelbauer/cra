@@ -63,14 +63,16 @@ jobs:
       - name: Delete the now empty `cra` directory
         run: rm -rf cra
 
+      # This PAT is provided by the GitHub Actions runtime and is good for
+      # everything but it will not cause GitHub Pages to deploy when pushed with
+      - name: Authenticate with GitHub using the out of the box PAT
+        run: git remote set-url origin https://tomashubelbauer:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}
+
+      - name: Stage the changes resulting from the above steps
+        run: git add *
+
       - name: Commit and push the change to the GitHub repository from the agent
         run: |
-          # Authenticate with GitHub using the out-of-the-box workflow PAT
-          git remote set-url origin https://tomashubelbauer:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}
-
-          # Stage the changes resulting from the above steps
-          git add *
-
           # Bail if there are no changes staged to commit
           if git diff-index --quiet HEAD --; then
             exit
