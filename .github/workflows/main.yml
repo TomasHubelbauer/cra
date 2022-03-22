@@ -14,7 +14,7 @@ jobs:
           # Enable dotglob to make sure the glob pattern matches hidden dotfiles as well
           shopt -s dotglob
 
-          # Walk the repository directory entries and delete everything but `.github`
+          # Walk the repository directory entries and delete everything but `.github` and `.git`
           for name in ./*
           do
             if [ $name == "./.github" ] || [ $name == "./.git" ]
@@ -27,7 +27,7 @@ jobs:
 
       # This is done temporarily to validate the above command did work as expected
       - name: Tree the repository directory to verify the deletion of everything
-        run: tree .
+        run: tree -a .
 
       # This will also attempt to initialize a Git repository and fail (no Git
       # identity set up on the build agent) and it will install the Node NPM
@@ -42,15 +42,16 @@ jobs:
       - name: Remove installed node_modules directory (unused in the workflow)
         run: rm -rf cra/node_modules
 
+      # `cra/` does work on macOS but doesn't work on Ubuntu it seems
       - name: Copy the contents of `cra` out to the repository directory
-        run: cp -r cra/ .
+        run: cp -r cra/. .
 
       - name: Delete the now empty `cra` directory
         run: rm cra
         
       # This is done temporarily to validate the above command did work as expected
       - name: Tree the repository directory to verify the move out of `cra`
-        run: tree .
+        run: tree -a .
 
       - name: Commit and push the change to the GitHub repository from the agent
         run: echo TODO
