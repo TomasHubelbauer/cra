@@ -10,7 +10,10 @@ jobs:
       - name: Install and scaffold create-react-app
         run: |
           npx create-react-app cra
+          cd cra
+          rm -rf node_modules
           tree cra
+          shopt -p
           # TODO: Delete everything but .github from the repository directory
           # TODO: Move the contents of `cra` out to the repository directory
           # TODO: Delete the now empty `cra` directory
