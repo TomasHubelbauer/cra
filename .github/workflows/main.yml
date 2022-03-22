@@ -7,6 +7,9 @@ jobs:
   cra:
     runs-on: ubuntu-latest
     steps:
+      # We need to check out first so that we have a baseline to make a diff of
+      - name: Check out the existing scaffolded source code to make the change against
+        uses: actions/checkout@v3
 
       # Reset the directory repository to an empty state for new CRA run
       - name: Delete everything but the `.github` repository directory
@@ -28,7 +31,7 @@ jobs:
 
       # This is done temporarily to validate the above command did work as expected
       - name: Tree the repository directory to verify the deletion of everything
-        run: tree -a .
+        run: ls -a .
 
       # This will also attempt to initialize a Git repository and fail (no Git
       # identity set up on the build agent) and it will install the Node NPM
@@ -44,12 +47,14 @@ jobs:
         run: rm -rf cra/node_modules
 
       # `cra/` works on macOS but doesn't work on Ubuntu without the extra `.`
-      - name: Move the contents of `cra` out to the repository directory
-        run: mv -r cra/. .
+      # I could use `mv` here but it is annoying and `cp` works and we delete
+      # the `cra` directory afterwards anyway
+      - name: Copy the contents of `cra` out to the repository directory
+        run: cp -r cra/. .
 
       # The directory has become empty as we moved out all of its contents up
       - name: Delete the now empty `cra` directory
-        run: rm -r cra
+        run: rm -rf cra
         
       # This is done temporarily to validate the above command did work as expected
       - name: Tree the repository directory to verify the move out of `cra`
