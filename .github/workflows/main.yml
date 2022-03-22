@@ -47,7 +47,7 @@ jobs:
         run: cp -r cra/. .
 
       - name: Delete the now empty `cra` directory
-        run: rm cra
+        run: rm -r cra
         
       # This is done temporarily to validate the above command did work as expected
       - name: Tree the repository directory to verify the move out of `cra`
