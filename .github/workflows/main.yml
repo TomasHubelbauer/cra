@@ -74,8 +74,8 @@ jobs:
       - name: Bail if there are no changes staged to commit
         id: bail
         run: |
-          if git diff-index --quiet HEAD --
-          then
+          git diff-index --quiet HEAD --
+          if git diff-index --quiet HEAD --; then
             echo "::set-output name=bail::true"
             echo "No changes - bailing"
           else
@@ -87,9 +87,11 @@ jobs:
         run: echo "${{steps.bail.outputs.bail}}"
 
       - name: Commit the staged changes to the workflow repository
+        if: ${{ steps.bail.outputs.bail != 'true' }}
         run: git commit -m "Update CRA template generated source code"
 
       - name: Rebase if the branch has changed meanwhile or fail on conflicts
+        if: ${{ steps.bail.outputs.bail != 'true' }}
         run: git pull --rebase
 
       - name: Push the commit to the workflow repository
