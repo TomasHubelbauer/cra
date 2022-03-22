@@ -75,11 +75,15 @@ jobs:
         id: bail
         run: |
           if git diff-index --quiet HEAD --; then
-            exit
+            echo "::set-output name=bail::true\n"
+            echo "No changes - bailing"
+          elif
+            echo "::set-output name=bail::false\n"
+            echo "Changes - continuing"
           fi
 
       - name: Echo the bail step output for debugging
-        run: echo "${{steps.run_tests.outputs.*}}"
+        run: echo "${{steps.run_tests.outputs.bail}}"
 
       - name: Commit the staged changes to the workflow repository
         run: git commit -m "Update CRA template generated source code"
