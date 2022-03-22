@@ -22,6 +22,7 @@ jobs:
               continue
             fi
 
+            echo $name
             rm -rf $name
           done
 
@@ -42,10 +43,11 @@ jobs:
       - name: Remove installed node_modules directory (unused in the workflow)
         run: rm -rf cra/node_modules
 
-      # `cra/` does work on macOS but doesn't work on Ubuntu it seems
-      - name: Copy the contents of `cra` out to the repository directory
-        run: cp -r cra/. .
+      # `cra/` works on macOS but doesn't work on Ubuntu without the extra `.`
+      - name: Move the contents of `cra` out to the repository directory
+        run: mv -r cra/. .
 
+      # The directory has become empty as we moved out all of its contents up
       - name: Delete the now empty `cra` directory
         run: rm -r cra
         
