@@ -78,14 +78,9 @@ jobs:
           git status
           if git diff-index --quiet HEAD --; then
             echo "::set-output name=bail::true"
-            echo "No changes - bailing"
           else
             echo "::set-output name=bail::false"
-            echo "Changes - continuing"
           fi
-
-      - name: Echo the bail step output for debugging
-        run: echo "${{steps.bail.outputs.bail}}"
 
       - name: Commit the staged changes to the workflow repository
         if: ${{ steps.bail.outputs.bail == 'false' }}
