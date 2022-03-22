@@ -11,6 +11,17 @@ jobs:
       - name: Check out the existing scaffolded source code to make the change against
         uses: actions/checkout@v3
 
+      # Set up Git baseline branch and identity before making any changes
+      - name: Commit and push the change to the GitHub repository from the agent
+        run: |
+          # Configure Git for the push from the workflow to the repository
+          # (This is needed even with the workflow PAT)
+          git config --global user.email "tomas@hubelbauer.net"
+          git config --global user.name "Tomas Hubelbauer"
+
+          # Check out the `main` branch - GitHub Actions checks out detached HEAD
+          git checkout main
+
       # Reset the directory repository to an empty state for new CRA run
       - name: Delete everything but the `.github` repository directory
         run: |
