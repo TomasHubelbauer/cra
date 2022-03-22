@@ -53,4 +53,23 @@ jobs:
         run: rm -rf cra
 
       - name: Commit and push the change to the GitHub repository from the agent
-        run: echo TODO
+        run: |
+          # Authenticate with GitHub using the out-of-the-box workflow PAT
+          git remote set-url origin https://tomashubelbauer:${{secrets.GITHUB_TOKEN}}@github.com/${{github.repository}}
+
+          # Stage the changes resulting from the above steps
+          git add *
+
+          # Bail if there are no changes staged to commit
+          if git diff-index --quiet HEAD --; then
+            exit
+          fi
+
+          # Commit the staged changes to the workflow repository
+          git commit -m "Update CRA template generated source code"
+
+          # Rebase if the branch has changed meanwhile or fail on conflicts
+          git pull --rebase
+
+          # Push the commit to the workflow repository 
+          git push
