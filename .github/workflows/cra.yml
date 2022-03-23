@@ -1,4 +1,4 @@
-name: Scaffold create-react-app
+name: create-react-app
 on:
   push:
   schedule:
