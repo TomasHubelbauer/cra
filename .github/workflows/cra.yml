@@ -91,4 +91,5 @@ jobs:
         run: git pull --rebase
 
       - name: Push the commit to the workflow repository
+        if: ${{ steps.bail.outputs.bail == 'false' }}
         run: git push
