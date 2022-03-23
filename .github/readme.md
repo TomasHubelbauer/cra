@@ -1,4 +1,4 @@
-# CRA Sample
+# CRA
 
 ![](https://github.com/TomasHubelbauer/cra-sample/actions/workflows/cra.yml/badge.svg)
 
