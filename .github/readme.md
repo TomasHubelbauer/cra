@@ -1,6 +1,6 @@
 # CRA Sample
 
-![](https://github.com/TomasHubelbauer/cra-sample/actions/workflows/main.yml/badge.svg)
+![](https://github.com/TomasHubelbauer/cra-sample/actions/workflows/cra.yml/badge.svg)
 
 This repository contains the `create-react-app` tool output when ran using this
 command:
