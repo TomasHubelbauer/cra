@@ -31,6 +31,16 @@ This repository exists for two reasons,
 
 ## To-Do
 
+### Use the GitHub Actions service account to author the automated commits
+
+https://github.com/TomasHubelbauer/github-actions-push-api#modification
+
+I do not have a solution there yet for multi-file changes, but maybe I will find
+a way to configure the Git identity such that GitHub associates the GitHub 
+Actions service account to the commits pushed by the Git client, which would
+solve the problem. The bot impersonating my user profile leads to an inflation
+of contributions on my user page on GitHub.
+
 ### Generated both JavaScript and TypeScript templates in two different folders
 
 Once this is done, also link to the TypeScript template in the readme:
